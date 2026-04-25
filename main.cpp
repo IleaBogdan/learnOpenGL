@@ -1,55 +1,57 @@
 #include"main.h"
 
-// resize window function
-void framebuffer_size_callback(GLFWwindow*window,int width,int height){
-    glViewport(0,0,width,height);
-}  
-void processInput(GLFWwindow*window){
-    if(glfwGetKey(window,GLFW_KEY_ESCAPE)==GLFW_PRESS){ // close window on esc
-        glfwSetWindowShouldClose(window,true);
-    }
-}
-
 signed main(){
-    glfwInit();
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR,3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR,3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE,GLFW_OPENGL_CORE_PROFILE);
+    init_glfw();
+
+    create_window(main_window,800,600,"The Main Window",nullptr,nullptr);
+    glfwMakeContextCurrent(main_window);
+    init_glad();  
+
+    glViewport(0,0,800,600); // where in the window will the program draw
+    set_callbacks(main_window);
     
+    unsigned int shaderProgram=load_default_shaders();
+
+    // fun stuff (it is not fun)
+    float vertices[] = {
+        -0.5f, -0.5f, 0.0f,
+        0.5f, -0.5f, 0.0f,
+        0.0f,  0.5f, 0.0f
+    };  
     
-    GLFWwindow*window=glfwCreateWindow(800,600,"LearnOpenGL",nullptr,nullptr);
-    // GLFWwindow*window=glfwCreateWindow(800,600,"LearnOpenGL",glfwGetPrimaryMonitor(),nullptr);
-    if(window==nullptr){
-        std::cerr<<"Failed to create GLFW window"<<std::endl;
-        glfwTerminate();
-        return -1;
-    }
-    glfwMakeContextCurrent(window);
+    // generate a vertex array object
+    unsigned int VBO,VAO;
+    glGenBuffers(1,&VBO);
+    glGenVertexArrays(1,&VAO);  
     
-    if(!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)){
-        std::cerr<<"Failed to initialize GLAD"<<std::endl;
-        return -1;
-    }  
+    glBindVertexArray(VAO);
+    
+    glBindBuffer(GL_ARRAY_BUFFER,VBO);
+    glBufferData(GL_ARRAY_BUFFER,sizeof(vertices),vertices,GL_STATIC_DRAW);
 
-    glViewport(0,0,800,600);
+    // first arg is set to 0 because we have in vertex.glsl layout=0
+    // the last arg is a void* and must be a void* of the offset from where the data starts
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);  
 
-    glfwSetFramebufferSizeCallback(window,framebuffer_size_callback); // resize window function set to window 
-
-
+    
     // render loop
-    glfwMakeContextCurrent(window);
-    while(!glfwWindowShouldClose(window)){
-        processInput(window);
-
+    glfwMakeContextCurrent(main_window);
+    while(!glfwWindowShouldClose(main_window)){
+        processInput(main_window);
+        
         // render stuff here:
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
+        
+        glUseProgram(shaderProgram);
+        glBindVertexArray(VAO);
+        glDrawArrays(GL_TRIANGLES,0,3);
         // end of render stuff
         
-        glfwSwapBuffers(window); // double buffer magic function
+        glfwSwapBuffers(main_window); // double buffer magic function
         glfwPollEvents(); // checks for events like keyboard, mouse or window close
     }
-
-    glfwTerminate();
+    endprogram(SUCCES);
     return 0;
 }
