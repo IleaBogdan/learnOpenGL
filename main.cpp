@@ -13,31 +13,42 @@ signed main(){
     unsigned int shaderProgram=load_default_shaders();
 
     // fun stuff (it is not fun)
-    float vertices[] = {
-        0.5f, -0.5f, 0.0f,  // bottom right
-        0.5f,  0.5f, 0.0f,  // top right
-        -0.5f, -0.5f, 0.0f,  // bottom left
-        -0.5f,  0.5f, 0.0f   // top left 
+    float vertices1[] = {
+        0.5f, -0.5f, 0.0f,
+        0.5f,  0.5f, 0.0f, 
+        -0.5f, -0.5f, 0.0f,
+        // -0.5f,  0.5f, 0.0f  
     };  
-    unsigned int indices[]{
-        0,1,2,
-        1,2,3
-    };
-    unsigned int vertices_numbers=3*2; // 3 * nr_of_triangles
+    unsigned int vertices_numbers1=3; // 3 * nr_of_triangles
+    float vertices2[] = {
+        // 0.5f, -0.5f, 0.0f,
+        0.5f,  0.5f, 0.0f, 
+        -0.5f, -0.5f, 0.0f,
+        -0.5f,  0.5f, 0.0f  
+    };  
+    unsigned int vertices_numbers2=3;
     
     // generate a vertex array object
-    unsigned int VBO,VAO,EBO;
-    glGenBuffers(1,&VBO);
-    glGenVertexArrays(1,&VAO);  
-    glGenBuffers(1, &EBO);
+    unsigned int VBO1,VAO1,VBO2,VAO2;
+    glGenBuffers(1,&VBO1);
+    glGenVertexArrays(1,&VAO1);
 
-    glBindVertexArray(VAO);
+    glBindVertexArray(VAO1);
     
-    glBindBuffer(GL_ARRAY_BUFFER,VBO);
-    glBufferData(GL_ARRAY_BUFFER,sizeof(vertices),vertices,GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER,VBO1);
+    glBufferData(GL_ARRAY_BUFFER,sizeof(vertices1),vertices1,GL_STATIC_DRAW);
+
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);  
     
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW); 
+
+    glGenBuffers(1,&VBO2);
+    glGenVertexArrays(1,&VAO2);
+
+    glBindVertexArray(VAO2);
+    
+    glBindBuffer(GL_ARRAY_BUFFER,VBO2);
+    glBufferData(GL_ARRAY_BUFFER,sizeof(vertices2),vertices2,GL_STATIC_DRAW);
     
     // first arg is set to 0 because we have in vertex.glsl layout=0
     // the last arg is a void* and must be a void* of the offset from where the data starts
@@ -45,6 +56,7 @@ signed main(){
     glEnableVertexAttribArray(0);  
 
     
+    render_triangle_number=1;
     // render loop
     glfwMakeContextCurrent(main_window);
     while(!glfwWindowShouldClose(main_window)){
@@ -55,13 +67,19 @@ signed main(){
         glClear(GL_COLOR_BUFFER_BIT);
         
         glUseProgram(shaderProgram);
-        glBindVertexArray(VAO);
-        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // just the lines
-        // glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); // fill inside the lines
+        if(render_triangle_number==1){
+            glBindVertexArray(VAO1);
+            glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // just the lines
+            // glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); // fill inside the lines
 
-        // actuall draw part:
-        // glDrawArrays(GL_TRIANGLES,0,vertices_numbers);        
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+            glDrawArrays(GL_TRIANGLES,0,vertices_numbers1);        
+        }else if(render_triangle_number==2){
+            glBindVertexArray(VAO2);
+            // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // just the lines
+            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); // fill inside the lines
+
+            glDrawArrays(GL_TRIANGLES,0,vertices_numbers2);
+        }
         glBindVertexArray(0);    
         // end of render stuff
         
