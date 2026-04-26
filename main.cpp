@@ -11,6 +11,7 @@ signed main(){
     set_callbacks(main_window);
     
     unsigned int shaderProgram=load_default_shaders();
+    unsigned int nondefault_shaderProgram=load_default_shaders("fragment_2.glsl");
 
     // fun stuff (it is not fun)
     float vertices1[] = {
@@ -56,7 +57,6 @@ signed main(){
     glEnableVertexAttribArray(0);  
 
     
-    render_triangle_number=1;
     // render loop
     glfwMakeContextCurrent(main_window);
     while(!glfwWindowShouldClose(main_window)){
@@ -66,7 +66,11 @@ signed main(){
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
         
-        glUseProgram(shaderProgram);
+        if(render_fragment==0){
+            glUseProgram(shaderProgram);
+        }else if(render_fragment==1){
+            glUseProgram(nondefault_shaderProgram);
+        }
         if(render_triangle_number==1){
             glBindVertexArray(VAO1);
             glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // just the lines

@@ -7,3 +7,4 @@
 
 std::string load_shader(const char*shaderPath);
 unsigned int load_default_shaders(void);
+unsigned int load_default_shaders(char const*fragShaderPath);
