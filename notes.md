@@ -9,3 +9,35 @@
 ## Hello-Triangle
 1. load the shaders (fragment and vertex since opengl 3 and 4 have no default shaders)
 2. make a program shader to do program shader stuff
+
+
+## Shaders
+1. The maximum number of vertex attributes on your gpu from your asus tuff gaming is 16.
+```C++
+int nrAttributes;
+glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &nrAttributes);
+std::cout << "Maximum nr of vertex attributes supported: " << nrAttributes << std::endl;
+```
+2. glsl types: int, float, double, uint, bool, vec
+```
+Vectors (n represents the number of components, from 2 to 4):
+ - vecn: the default vector of n floats.
+ - bvecn: a vector of n booleans.
+ - ivecn: a vector of n integers.
+ - uvecn: a vector of n unsigned integers.
+ - dvecn: a vector of n double components.
+```
+3. we can use a vec with vec_name.x vec_name.y vec_name.z vec_name.w (GLSL also allows you to use rgba for colors or stpq for texture coordinates, accessing the same components.)
+4. swizzling is allowed. swizzling is something like this:
+```glsl
+vec2 someVec;
+vec4 differentVec = someVec.xyxx;
+vec3 anotherVec = differentVec.zyw;
+vec4 otherVec = someVec.xxxx + anotherVec.yxzy;
+```
+5. there also is a constructor like function that takes in values and other vecs:
+```glsl
+vec2 vect = vec2(0.5, 0.7);
+vec4 result = vec4(vect, 0.0, 0.0);
+vec4 otherResult = vec4(result.xyz, 1.0);
+``` 
