@@ -10,6 +10,9 @@ signed main(){
     glViewport(0,0,800,600); // where in the window will the program draw
     set_callbacks(main_window);
     
+    // key callbacks for input
+    glfwSetKeyCallback(main_window,key_callback);
+
     unsigned int shaderProgram=load_default_shaders();
     unsigned int nondefault_shaderProgram=load_default_shaders("fragment_2.glsl");
 
@@ -51,6 +54,7 @@ signed main(){
     glBindBuffer(GL_ARRAY_BUFFER,VBO2);
     glBufferData(GL_ARRAY_BUFFER,sizeof(vertices2),vertices2,GL_STATIC_DRAW);
     
+    // this assignee a region of memory of specific size and tipe on the gpu where I can render stuff with the VAO
     // first arg is set to 0 because we have in vertex.glsl layout=0
     // the last arg is a void* and must be a void* of the offset from where the data starts
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
@@ -60,30 +64,47 @@ signed main(){
     // render loop
     glfwMakeContextCurrent(main_window);
     while(!glfwWindowShouldClose(main_window)){
-        processInput(main_window);
+        // processInput(main_window);
         
         // render stuff here:
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
         
-        if(render_fragment==0){
+        if(render_the_same){
             glUseProgram(shaderProgram);
-        }else if(render_fragment==1){
-            glUseProgram(nondefault_shaderProgram);
-        }
-        if(render_triangle_number==1){
             glBindVertexArray(VAO1);
-            glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // just the lines
-            // glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); // fill inside the lines
-
-            glDrawArrays(GL_TRIANGLES,0,vertices_numbers1);        
-        }else if(render_triangle_number==2){
+            // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // just the lines
+            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); // fill inside the lines
+            glDrawArrays(GL_TRIANGLES,0,vertices_numbers1);
+            
+            
+            glUseProgram(nondefault_shaderProgram);
             glBindVertexArray(VAO2);
             // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // just the lines
             glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); // fill inside the lines
-
             glDrawArrays(GL_TRIANGLES,0,vertices_numbers2);
+        }else{
+            // swapping logic stuff.
+            if(render_fragment==0){
+                glUseProgram(shaderProgram);
+            }else if(render_fragment==1){
+                glUseProgram(nondefault_shaderProgram);
+            }
+            if(render_triangle_number==1){
+                glBindVertexArray(VAO1);
+                glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // just the lines
+                // glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); // fill inside the lines
+
+                glDrawArrays(GL_TRIANGLES,0,vertices_numbers1);        
+            }else if(render_triangle_number==2){
+                glBindVertexArray(VAO2);
+                // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // just the lines
+                glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); // fill inside the lines
+
+                glDrawArrays(GL_TRIANGLES,0,vertices_numbers2);
+            }
         }
+
         glBindVertexArray(0);    
         // end of render stuff
         
