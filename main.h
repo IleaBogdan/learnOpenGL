@@ -3,6 +3,7 @@
 #include<iostream>
 #include<fstream>
 #include<string>
+#include<cmath>
 
 // opengl libs:
 #include<glad/glad.h> // this is for opengl 3 and 4

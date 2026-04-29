@@ -69,8 +69,13 @@ signed main(){
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
         
+        float time=glfwGetTime();
+        float greenVal=(sin(time)/2.f)+.5f;
+        int ourColor_index=glGetUniformLocation(shaderProgram,"ourColor");
+
         if(render_the_same){
             glUseProgram(shaderProgram);
+            glUniform4f(ourColor_index, 0.0f, greenVal, 0.0f, 1.0f);
             glBindVertexArray(VAO1);
             // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // just the lines
             glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); // fill inside the lines
@@ -90,12 +95,14 @@ signed main(){
                 glUseProgram(nondefault_shaderProgram);
             }
             if(render_triangle_number==1){
+                glUniform4f(ourColor_index, 0.0f, greenVal, 0.0f, 1.0f);
                 glBindVertexArray(VAO1);
                 glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // just the lines
                 // glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); // fill inside the lines
 
                 glDrawArrays(GL_TRIANGLES,0,vertices_numbers1);        
             }else if(render_triangle_number==2){
+                glUniform4f(ourColor_index, 0.0f, greenVal, 0.0f, 1.0f);
                 glBindVertexArray(VAO2);
                 // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // just the lines
                 glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); // fill inside the lines
