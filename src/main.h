@@ -1,0 +1,16 @@
+#pragma once
+#include<iostream>
+#include<fstream>
+#include<string>
+#include<vector>
+#include<cmath>
+
+#include<glad/glad.h>
+#include<GLFW/glfw3.h>
+
+#include"vars.h"
+#include"callbacks.h"
+#include"shader_class/shader.h"
+#include"shapes.h"
+
+void init(GLFWwindow*&window);
