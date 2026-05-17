@@ -64,7 +64,11 @@ void shader::draw(size_t vo_index){
     glBindVertexArray(this->vo[vo_index].VAO);
     // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // just the lines
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); // fill inside the lines
+    
+    // this only takes sets of 3 from the vector and draws traingles with each one of them and then moves to the next set of 3 from the vector
     glDrawArrays(GL_TRIANGLES,0,this->vo[vo_index].shape_size());
+    // this draws everything as a single shape (note: use it for convex polygons, idk what happes in a non convex polygon)
+    // glDrawArrays(GL_TRIANGLE_FAN,0,this->vo[vo_index].shape_size());
 }
 
 // template<typename...UniformPairs>
@@ -81,5 +85,9 @@ void shader::draw(size_t vo_index){
 //     glBindVertexArray(this->vo[vo_index].VAO);
 //     // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // just the lines
 //     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); // fill inside the lines
+
+//     // this only takes sets of 3 from the vector and draws traingles with each one of them and then moves to the next set of 3 from the vector
 //     glDrawArrays(GL_TRIANGLES,0,this->vo[vo_index].shape_size());
+//     // this draws everything as a single shape (note: use it for convex polygons, idk what happes in a non convex polygon)
+//     glDrawArrays(GL_TRIANGLE_FAN,0,this->vo[vo_index].shape_size());
 // }
