@@ -7,3 +7,11 @@ This repo has my commits from when I learned OpenGL.
 
 ### Notes for installation:
  - install glad in the project and put it into the `include` directory
+
+
+### Note for math stuff:
+ - rotation formula:
+	```glsl
+	rx=x*cos(alpha)-y*sin(alpha);
+    ry=x*sin(alpha)+y*cos(alpha);
+	```
