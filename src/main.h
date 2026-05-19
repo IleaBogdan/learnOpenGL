@@ -13,4 +13,4 @@
 #include"shader_class/shader.h"
 #include"shapes.h"
 
-void init(GLFWwindow*&window);
+void init(GLFWwindow*&window,const std::string&window_name);
