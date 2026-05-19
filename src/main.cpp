@@ -7,8 +7,10 @@ signed main(int argc,char*argv[]){
     glfwSetKeyCallback(main_window,key_callback);
 
     shader main_shader;
+    // main_shader.init("shaders/vertex_v2.glsl","shaders/fragment_v2.glsl");
+    // main_shader.add_vo(trig_2,trig_2_attribute_sizes);
     main_shader.init("shaders/vertex.glsl","shaders/fragment.glsl");
-    main_shader.add_vo(trig_1);
+    main_shader.add_vo(trig_1,trig_1_attribute_sizes);
 
     glfwMakeContextCurrent(main_window);
     while(!glfwWindowShouldClose(main_window)){

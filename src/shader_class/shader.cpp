@@ -43,9 +43,9 @@ const std::string shader::load_shader(const std::string&shader_path){
     return std::string((std::istreambuf_iterator<char>(file)),std::istreambuf_iterator<char>()); // oneliner to read the file
 }
 
-void shader::add_vo(const std::vector<float>&shape){
+void shader::add_vo(const std::vector<float>&shape,const std::vector<int>&attribute_sizes){
     vertex_object new_vo;
-    new_vo.init(shape);
+    new_vo.init(shape,attribute_sizes);
     this->vo.push_back(new_vo);
 }
 

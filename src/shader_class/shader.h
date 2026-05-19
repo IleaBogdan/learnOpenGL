@@ -4,6 +4,7 @@
 #include<string>
 #include<vector>
 #include<type_traits>
+#include<numeric>
 
 #include<glad/glad.h>
 #include<GLFW/glfw3.h>
@@ -11,12 +12,15 @@
 class vertex_object{
 private:
     bool inited=false;
+    std::vector<int>attribute_sizes;
     std::vector<float>verts;
 public:
     unsigned int VAO,VBO;
     vertex_object()=default;
-    void init(std::vector<float>_verts);
-    size_t shape_size(void);
+    void init(const std::vector<float>&_verts,const std::vector<int>&_attribute_sizes);
+    int get_stride(void)const;
+    int get_offset(int attribute_index)const;
+    size_t shape_size(void)const;
 };
 
 class shader{
@@ -30,7 +34,7 @@ public:
     void init(const std::string&vertex_shader_path,const std::string&fragment_shader_path);
 
     // vo stuff
-    void add_vo(const std::vector<float>&shape);
+    void add_vo(const std::vector<float>&shape,const std::vector<int>&attribute_sizes);
     void remove_last_vo();
     
     // draw
