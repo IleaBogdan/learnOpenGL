@@ -1,11 +1,13 @@
 #include"shader.h"
 
 int vertex_object::get_stride()const{
+    if(!this->inited)throw("Using uninited Vertex Object!");
     // Total bytes from one vertex to the next
     return std::accumulate(this->attribute_sizes.begin(),this->attribute_sizes.end(),0)*sizeof(float);
 }
 
 int vertex_object::get_offset(int attribute_index)const{
+    if(!this->inited)throw("Using uninited Vertex Object!");
     // Calculate offset for a specific attribute (in bytes)
     int offset=0;
     for(int i=0;i<attribute_index;++i){
@@ -43,6 +45,7 @@ void vertex_object::init(const std::vector<float>&_verts,const std::vector<int>&
 }
 
 size_t vertex_object::shape_size(void)const{
+    if(!this->inited)throw("Using uninited Vertex Object!");
     // Total floats per vertex
     int floats_per_vertex=std::accumulate(this->attribute_sizes.begin(),this->attribute_sizes.end(),0);
     return this->verts.size()/floats_per_vertex;
