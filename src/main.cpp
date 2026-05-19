@@ -10,6 +10,10 @@ signed main(int argc,char*argv[]){
     main_shader.init("shaders/vertex.glsl","shaders/fragment.glsl");
     main_shader.add_vo(trig_1);
 
+    shader second_shader;
+    second_shader.init("shaders/vertex.glsl","shaders/fragment.glsl");
+    second_shader.add_vo(trig_2);
+
     glfwMakeContextCurrent(main_window);
     while(!glfwWindowShouldClose(main_window)){
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
@@ -19,11 +23,14 @@ signed main(int argc,char*argv[]){
         float greenVal=(sin(time)/2.f)+.5f;
         main_shader.draw(0,"ourColor",std::vector<float>{.0f,greenVal,.0f,1.f});
         
+        second_shader.draw(0,"ourColor",std::vector<float>{.0f,.0f,1.f,1.f});
+
         glBindVertexArray(0);
         // end of render stuff
 
         glfwSwapBuffers(main_window);
         glfwPollEvents();
     }
+    glfwTerminate();
     return 0;
 }
