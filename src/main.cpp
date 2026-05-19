@@ -21,8 +21,8 @@ signed main(int argc,char*argv[]){
         float greenVal=(sin(time)/2.f)+.5f;
         main_shader.draw(0,
             // uniforms:
-            "horizontal_offset",std::vector<float>{global_horizontal_offset},
-            "vertical_offset",std::vector<float>{global_vertical_offset}
+            "offsets",std::vector<float>{global_horizontal_offset,global_vertical_offset},
+            "alpha",std::vector<float>{alpha}
         );
         
         glBindVertexArray(0);
