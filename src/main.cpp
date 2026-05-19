@@ -19,7 +19,11 @@ signed main(int argc,char*argv[]){
 
         float time=glfwGetTime();
         float greenVal=(sin(time)/2.f)+.5f;
-        main_shader.draw(0,"ourColor",std::vector<float>{.0f,greenVal,.0f,1.f});
+        main_shader.draw(0,
+            // uniforms:
+            "horizontal_offset",std::vector<float>{global_horizontal_offset},
+            "vertical_offset",std::vector<float>{global_vertical_offset}
+        );
         
         glBindVertexArray(0);
         // end of render stuff
