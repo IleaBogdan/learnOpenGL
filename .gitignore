@@ -3,3 +3,4 @@ bin
 include
 glad.c
 shape.txt
+stb_image.h

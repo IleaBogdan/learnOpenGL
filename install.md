@@ -15,3 +15,9 @@ Downloadt the zip and extract it in the project.
 sudo apt install libglfw3-dev
 sudo apt install libglu1-mesa-dev freeglut3-dev libxi-dev
 ```
+
+# stb_image.h
+
+https://github.com/nothings/stb/blob/master/stb_image.h
+
+Just download the file from here.

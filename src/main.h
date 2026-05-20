@@ -12,5 +12,6 @@
 #include"callbacks.h"
 #include"shader_class/shader.h"
 #include"shapes.h"
+#include"stb_image.h"
 
 void init(GLFWwindow*&window,const std::string&window_name);
