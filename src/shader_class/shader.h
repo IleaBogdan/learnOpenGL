@@ -25,13 +25,16 @@ public:
 
 class shader{
 private:
-    unsigned int program_id;
+    unsigned int program_id,texture;
+    size_t texture_type;
     const std::string load_shader(const std::string&shader_path);
     std::vector<vertex_object>vo;
 public:
     shader()=default;
     unsigned int get_program(void);
-    void init(const std::string&vertex_shader_path,const std::string&fragment_shader_path);
+    void init(const std::string&vertex_shader_path,const std::string&fragment_shader_path);\
+
+    void init_texture(const unsigned int&_texture,const size_t&_type);
 
     // vo stuff
     void add_vo(const std::vector<float>&shape,const std::vector<int>&attribute_sizes);
@@ -54,9 +57,30 @@ public:
         glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
 
         // this only takes sets of 3 from the vector and draws traingles with each one of them and then moves to the next set of 3 from the vector
-        glDrawArrays(GL_TRIANGLES,0,this->vo[vo_index].shape_size());
+        // glDrawArrays(GL_TRIANGLES,0,this->vo[vo_index].shape_size());
         // this draws everything as a single shape (note: use it for convex polygons, idk what happes in a non convex polygon)
-        // glDrawArrays(GL_TRIANGLE_FAN,0,this->vo[vo_index].shape_size());
+        glDrawArrays(GL_TRIANGLE_FAN,0,this->vo[vo_index].shape_size());
+    }
+    void draw_with_texture(size_t vo_index);
+    template<typename...UniformPairs>
+    void draw_with_texture(size_t vo_index,UniformPairs&&...uniform_pairs){
+        glUseProgram(this->program_id);
+
+        if(vo_index>=vo.size()){
+            std::cerr<<"Invalid vertex object index!\n";
+            return;
+        }
+
+        set_uniforms(std::forward<UniformPairs>(uniform_pairs)...);
+
+        glBindTexture(this->texture_type,this->texture);
+        glBindVertexArray(this->vo[vo_index].VAO);
+        glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
+
+        // this only takes sets of 3 from the vector and draws traingles with each one of them and then moves to the next set of 3 from the vector
+        // glDrawArrays(GL_TRIANGLES,0,this->vo[vo_index].shape_size());
+        // this draws everything as a single shape (note: use it for convex polygons, idk what happes in a non convex polygon)
+        glDrawArrays(GL_TRIANGLE_FAN,0,this->vo[vo_index].shape_size());
     }
 
     // templates

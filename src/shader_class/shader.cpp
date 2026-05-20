@@ -33,6 +33,11 @@ void shader::init(const std::string&vertex_shader_path,const std::string&fragmen
     // end of shader loading (thank god)
 }
 
+void shader::init_texture(const unsigned int&_texture,const size_t&_type){
+    this->texture=_texture;
+    this->texture_type=_type;
+}
+
 const std::string shader::load_shader(const std::string&shader_path){
     std::ifstream file;
     file.open(shader_path);
@@ -66,10 +71,28 @@ void shader::draw(size_t vo_index){
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); // fill inside the lines
     
     // this only takes sets of 3 from the vector and draws traingles with each one of them and then moves to the next set of 3 from the vector
-    glDrawArrays(GL_TRIANGLES,0,this->vo[vo_index].shape_size());
+    // glDrawArrays(GL_TRIANGLES,0,this->vo[vo_index].shape_size());
     // this draws everything as a single shape (note: use it for convex polygons, idk what happes in a non convex polygon)
-    // glDrawArrays(GL_TRIANGLE_FAN,0,this->vo[vo_index].shape_size());
+    glDrawArrays(GL_TRIANGLE_FAN,0,this->vo[vo_index].shape_size());
 }
+
+void shader::draw_with_texture(size_t vo_index){
+        glUseProgram(this->program_id);
+
+        if(vo_index>=vo.size()){
+            std::cerr<<"Invalid vertex object index!\n";
+            return;
+        }
+
+        glBindTexture(this->texture_type,this->texture);
+        glBindVertexArray(this->vo[vo_index].VAO);
+        glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
+
+        // this only takes sets of 3 from the vector and draws traingles with each one of them and then moves to the next set of 3 from the vector
+        // glDrawArrays(GL_TRIANGLES,0,this->vo[vo_index].shape_size());
+        // this draws everything as a single shape (note: use it for convex polygons, idk what happes in a non convex polygon)
+        glDrawArrays(GL_TRIANGLE_FAN,0,this->vo[vo_index].shape_size());
+    }
 
 // template<typename...UniformPairs>
 // void shader::draw(size_t vo_index,UniformPairs&&...uniform_pairs){
