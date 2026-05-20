@@ -39,5 +39,7 @@ signed main(int argc,char*argv[]){
         glfwSwapBuffers(main_window);
         glfwPollEvents();
     }
+    end_program:
+    glfwTerminate();
     return 0;
 }
