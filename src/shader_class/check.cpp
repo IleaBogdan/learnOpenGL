@@ -1,6 +1,6 @@
 #include"shader.h"
 
-void check::checkProgramError(const unsigned int&program){
+void check::programError(const unsigned int&program){
     // program erro check
     int success;
     glGetProgramiv(program, GL_LINK_STATUS, &success);
@@ -12,7 +12,7 @@ void check::checkProgramError(const unsigned int&program){
     }
 }
 
-void check::checkShaderError(const unsigned int&shader){
+void check::shaderError(const unsigned int&shader){
     // shader error checking
     int success;
     glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
