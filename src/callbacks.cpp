@@ -8,6 +8,7 @@ void framebuffer_size_callback(GLFWwindow*window,int width,int height){
     glViewport(0,0,width,height);
 }  
 
+bool fliped=false;
 void key_callback(GLFWwindow*window,int key,int scancode,int action,int mods){
     if(key==GLFW_KEY_ESCAPE&&action==GLFW_PRESS){
         glfwSetWindowShouldClose(window,true);
@@ -29,5 +30,11 @@ void key_callback(GLFWwindow*window,int key,int scancode,int action,int mods){
     }
     if(key==GLFW_KEY_RIGHT){
         alpha+=PI/6.f;
+    }
+    if(key==GLFW_KEY_SPACE){
+        mixValue+=fliped?-.05:.05;
+        if(mixValue>=1.f||mixValue<=.0f)fliped=!fliped;
+        if(mixValue>=1.f)mixValue=1.f;
+        if(mixValue<=.0f)mixValue=.0f;
     }
 }

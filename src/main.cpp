@@ -3,7 +3,7 @@
 signed main(int argc,char*argv[]){
     init(main_window,"Learn OpenGL");
     glViewport(0,0,800,600); // where in the window will the program draw
-    glfwSetInputMode(main_window,GLFW_CURSOR,GLFW_CURSOR_HIDDEN); // hide cursor
+    // glfwSetInputMode(main_window,GLFW_CURSOR,GLFW_CURSOR_HIDDEN); // hide cursor
     set_callbacks(main_window);
     glfwSetKeyCallback(main_window,key_callback);
 
@@ -42,6 +42,9 @@ signed main(int argc,char*argv[]){
         int ourColorIdx=glGetUniformLocation(main_shader.get_program(),"ourColor");
         glUniform4f(ourColorIdx,.0f,.0f,blueVal,.0f);
         
+        int mixValueIdx=glGetUniformLocation(main_shader.get_program(),"mixValue");
+        glUniform1f(mixValueIdx,mixValue);
+
         // int offsetsIdx=glGetUniformLocation(main_shader.get_program(),"offsets");
         // glUniform2f(offsetsIdx,global_horizontal_offset,global_vertical_offset);
 
