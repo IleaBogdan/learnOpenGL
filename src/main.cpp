@@ -3,6 +3,7 @@
 signed main(int argc,char*argv[]){
     init(main_window,"Learn OpenGL");
     glViewport(0,0,800,600); // where in the window will the program draw
+    glfwSetInputMode(main_window,GLFW_CURSOR,GLFW_CURSOR_HIDDEN); // hide cursor
     set_callbacks(main_window);
     glfwSetKeyCallback(main_window,key_callback);
 
@@ -14,7 +15,15 @@ signed main(int argc,char*argv[]){
     vertex_object vo;
     vo.init(square_1,square_1_attribute_sizes);
 
-    unsigned int texture=load_image_to_2d_texture("assets/wood_container.jpg");
+    unsigned int texture1=load_image_to_2d_texture("assets/wood_container.jpg",GL_RGB);
+    unsigned int texture2=load_image_to_2d_texture("assets/awesomeface.png",GL_RGBA);
+
+    // we tell opengl to set each texture to each uniform
+    glUseProgram(main_shader.get_program());
+    glUniform1i(glGetUniformLocation(main_shader.get_program(),"texture1"),0);
+
+    glUseProgram(main_shader.get_program());
+    glUniform1i(glGetUniformLocation(main_shader.get_program(),"texture2"),1);
 
     glfwMakeContextCurrent(main_window);
     while(!glfwWindowShouldClose(main_window)){
@@ -27,11 +36,11 @@ signed main(int argc,char*argv[]){
         glUseProgram(main_shader.get_program());
 
         
-        int uColorIdx=glGetUniformLocation(main_shader.get_program(),"uColor");
-        glUniform1f(uColorIdx,blueVal);
+        // int uColorIdx=glGetUniformLocation(main_shader.get_program(),"uColor");
+        // glUniform1f(uColorIdx,blueVal);
         
-        // int ourColorIdx=glGetUniformLocation(main_shader.get_program(),"ourColor");
-        // glUniform4f(ourColorIdx,.0f,.0f,blueVal,.0f);
+        int ourColorIdx=glGetUniformLocation(main_shader.get_program(),"ourColor");
+        glUniform4f(ourColorIdx,.0f,.0f,blueVal,.0f);
         
         // int offsetsIdx=glGetUniformLocation(main_shader.get_program(),"offsets");
         // glUniform2f(offsetsIdx,global_horizontal_offset,global_vertical_offset);
@@ -39,10 +48,13 @@ signed main(int argc,char*argv[]){
         // int alphaIdx=glGetUniformLocation(main_shader.get_program(),"alpha");
         // glUniform1f(alphaIdx,alpha);
         
-        glBindTexture(GL_TEXTURE_2D,texture);
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D,texture1);
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D,texture2);
+        
         glBindVertexArray(vo.get_VAO());
-        glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
-
+                
         // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // just the lines
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); // fill inside the lines
 

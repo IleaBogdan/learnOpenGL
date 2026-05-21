@@ -14,5 +14,5 @@
 #include"shapes.h"
 #include"stb_image.h"
 
-void init(GLFWwindow*&window,const std::string&window_name);
-unsigned int load_image_to_2d_texture(const std::string&image_path);
+void init(GLFWwindow*&window,const std::string&window_name,const bool&primariy_monitor=false);
+unsigned int load_image_to_2d_texture(const std::string&image_path,const int&channels,const bool&flip=true);

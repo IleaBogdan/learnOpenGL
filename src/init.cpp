@@ -1,12 +1,12 @@
 #include"main.h"
 
-void init(GLFWwindow*&window,const std::string&window_name){
+void init(GLFWwindow*&window,const std::string&window_name,const bool&primary_monitor){
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR,3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR,3);
     glfwWindowHint(GLFW_OPENGL_PROFILE,GLFW_OPENGL_CORE_PROFILE);
     
-    window=glfwCreateWindow(800,600,window_name.c_str(),nullptr,nullptr);
+    window=glfwCreateWindow(800,600,window_name.c_str(),primary_monitor?glfwGetPrimaryMonitor():nullptr,nullptr);
     if(!window){
         std::cerr<<"Failed to create window!\n";
         exit(-1);
@@ -19,7 +19,8 @@ void init(GLFWwindow*&window,const std::string&window_name){
     }
 }
 
-unsigned int load_image_to_2d_texture(const std::string&image_path){
+unsigned int load_image_to_2d_texture(const std::string&image_path,const int&channels,const bool&flip){
+    stbi_set_flip_vertically_on_load(flip); 
     // load image data and generate texture
     unsigned int texture;
     glGenTextures(1,&texture);  
@@ -42,10 +43,11 @@ unsigned int load_image_to_2d_texture(const std::string&image_path){
     // the first agrument is what type of texture we have (it can be 1D, 2D or 3D)
     // the second argument has something to do with the mipmap level
     // the 3rd argument is what type of data is in our image (i.e. RGB data)
-    glTexImage2D(GL_TEXTURE_2D,0,GL_RGB,width,height,0,GL_RGB,GL_UNSIGNED_BYTE,data);
+    glTexImage2D(GL_TEXTURE_2D,0,GL_RGB,width,height,0,channels,GL_UNSIGNED_BYTE,data);
     glGenerateMipmap(GL_TEXTURE_2D);
 
     stbi_image_free(data);
+    stbi_set_flip_vertically_on_load(!flip);  
 
     return texture;
 }
