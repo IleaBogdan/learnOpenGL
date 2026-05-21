@@ -24,6 +24,10 @@ if [ $status -ne 0 ]; then
     exit 1
 else
     echo "Compilation done!"
-    echo "Running Program!"
-    ./bin/exe
+    if [ -z "$1" ]; then
+        echo "Running Program!"
+        ./bin/exe
+    else
+        echo "Don't provide any arg to run the binary as well!"
+    fi
 fi

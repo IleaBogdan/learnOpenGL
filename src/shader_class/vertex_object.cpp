@@ -50,3 +50,12 @@ size_t vertex_object::shape_size(void)const{
     int floats_per_vertex=std::accumulate(this->attribute_sizes.begin(),this->attribute_sizes.end(),0);
     return this->verts.size()/floats_per_vertex;
 }
+
+unsigned int vertex_object::get_VBO(void)const{
+    if(!this->inited)throw("Using uninited Vertex Object!");
+    return this->VBO;
+}
+unsigned int vertex_object::get_VAO(void)const{
+    if(!this->inited)throw("Using uninited Vertex Object!");
+    return this->VAO;
+}
